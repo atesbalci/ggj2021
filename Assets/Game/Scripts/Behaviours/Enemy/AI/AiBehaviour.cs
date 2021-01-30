@@ -43,7 +43,7 @@ namespace Game.Behaviours.Enemy.AI
 			{
 				new EmptyState(transform, _movementBehaviour),
 				new IdleState(_movementBehaviour, _animationBehaviour),
-				new StrafeState(),
+				new StrafeState(transform, _movementBehaviour),
 				new ChaseState(),
 				new CatchState()
 			};
