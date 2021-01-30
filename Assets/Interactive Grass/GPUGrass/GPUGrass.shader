@@ -94,17 +94,17 @@
 	vertexOutput domain (TessellationFactors factors, OutputPatch<vertexInput, 3> patch, float3 barycentricCoordinates : SV_DomainLocation)
 	{
 		vertexInput v;
-
+	
 		#define GRASS_DOMAIN_INTERPOLATE(fieldName) v.fieldName = \
 			patch[0].fieldName * barycentricCoordinates.x + \
 			patch[1].fieldName * barycentricCoordinates.y + \
 			patch[2].fieldName * barycentricCoordinates.z;
-
+	
 		GRASS_DOMAIN_INTERPOLATE(vertex)
 		GRASS_DOMAIN_INTERPOLATE(normal)
 		GRASS_DOMAIN_INTERPOLATE(tangent)
 		GRASS_DOMAIN_INTERPOLATE(texcoord)
-
+	
 		vertexOutput o;
 		o.vertex = v.vertex;
 		o.normal = v.normal;
@@ -203,10 +203,13 @@
 	}
 	ENDCG
 	SubShader {
-		Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline" }
+		Tags{ "RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" }
 		Cull Off
 		Pass {
-			Tags{ "LightMode" = "UniversalForward" }
+
+			Blend SrcAlpha OneMinusSrcAlpha
+            ZWrite On
+	
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma geometry geo
@@ -228,8 +231,9 @@
 			ENDCG
 		}
 		Pass {
-			Tags { "LightMode" = "ShadowCaster" }
+
 			CGPROGRAM
+			
 			#pragma vertex vert
 			#pragma geometry geo
 			#pragma fragment frag
@@ -237,6 +241,7 @@
 			#pragma domain domain
 			#pragma target 4.6
 			#pragma multi_compile_shadowcaster
+			
 			float4 frag (geometryOutput i) : SV_Target
 			{
 				SHADOW_CASTER_FRAGMENT(i)
