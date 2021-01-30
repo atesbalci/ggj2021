@@ -16,7 +16,8 @@ namespace Game.Behaviours.ECS.Systems
             float3 playerLoc = PlayerTransform.position;
             playerLoc.y = 0f;
             float playerYRot = PlayerTransform.eulerAngles.y * Mathf.Deg2Rad;
-            float3 playerRightVec = PlayerTransform.right;
+            float3 playerRight = PlayerTransform.right;
+            float3 playerForward = PlayerTransform.forward;
             Entities.ForEach((ref GrassComponent grass, ref Translation translation, ref Rotation rotation) =>
             {
                 var vec = playerLoc - translation.Value;
@@ -28,11 +29,9 @@ namespace Game.Behaviours.ECS.Systems
                 
                 if (distSq < Constants.GrassCloseThresholdSq)
                 {
-                    rotation.Value = quaternion.Euler(
-                        0f,
-                        playerYRot,
-                        (1f - distSq / Constants.GrassCloseThresholdSq) * (math.PI / 12f) * (math.dot(playerRightVec, -vec) > 0 ? -1f : 1f),
-                        math.RotationOrder.ZYX);
+                    rotation.Value = quaternion.AxisAngle(playerForward,
+                        (1f - distSq / Constants.GrassCloseThresholdSq) * (math.PI / 12f) *
+                        (math.dot(playerRight, -vec) > 0 ? -1f : 1f));
                 }
                 else
                 {
