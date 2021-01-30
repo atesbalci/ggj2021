@@ -37,6 +37,11 @@ namespace Game.Behaviours.Enemy.Animation
 		{
 			_animator.SetTrigger(_agony);
 		}
+
+		public void PlayCatch()
+		{
+			PlayIdle();
+		}
 		
 		public void SetSpeed(float speed)
 		{

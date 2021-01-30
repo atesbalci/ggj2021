@@ -18,7 +18,7 @@ namespace Game.Helpers
 			}
 		}
 
-		private readonly List<Gizmo> _gizmos = new List<Gizmo>();
+		private readonly List<GizmoHandler> _gizmos = new List<GizmoHandler>();
 
 		private void OnDestroy()
 		{
@@ -40,9 +40,9 @@ namespace Game.Helpers
 			}
 		}
 		
-		public static void DrawSphere(Vector3 center, float radius, Color color, float duration)
+		public static void DrawSphere(Vector3 center, float radius, Color color, float duration = 0f)
 		{
-			Instance._gizmos.Add(new Gizmo()
+			Instance._gizmos.Add(new GizmoHandler()
 			{
 				Duration = duration,
 				Color = color,
@@ -52,8 +52,34 @@ namespace Game.Helpers
                 }
 			});
 		}
+
+		public static void DrawCube(Vector3 center, Vector3 size, Color color, float duration = 0f)
+		{
+			Instance._gizmos.Add(new GizmoHandler()
+			{
+				Duration = duration,
+				Color    = color,
+				GizmoCallback = () =>
+                {
+	                Gizmos.DrawCube(center, size);
+                }
+			});
+		}
+
+		public static void DrawLine(Vector3 from, Vector3 to, Color color, float duration = 0f)
+		{
+			Instance._gizmos.Add(new GizmoHandler()
+			{
+				Duration = duration,
+				Color    = color,
+				GizmoCallback = () =>
+                {
+	                Gizmos.DrawLine(from, to);
+                }
+			});
+		}
 		
-		private class Gizmo
+		private class GizmoHandler
 		{
 			public float  Duration;
 			public Color  Color;

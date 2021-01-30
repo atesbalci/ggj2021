@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Game.Behaviours.Enemy.Movement;
+using Game.Behaviours.Enemy.Sensor;
 using Game.Helpers;
 using UnityEngine;
 
@@ -9,28 +10,30 @@ namespace Game.Behaviours.Enemy.AI.States
 	public class StrafeState : BaseState
 	{
 		private readonly Transform         _owner;
+		private readonly Transform         _player;
 		private readonly MovementBehaviour _movementBehaviour;
+		private readonly VisionSensor      _visionSensor;
 		
-		private Transform _player;
-
 		private int           _currentWaypointIndex;
 		private float         _currentWaypointSetDistance;
 		private List<Vector3> _relativeWaypoints;
 
 		public StrafeState(
 			Transform owner,
-			MovementBehaviour movementBehaviour)
+			Transform player,
+			MovementBehaviour movementBehaviour,
+			VisionSensor visionSensor)
 		{
 			_owner             = owner;
+			_player            = player;
 			_movementBehaviour = movementBehaviour;
+			_visionSensor      = visionSensor;
 		}
 		
 		public override void Enter()
 		{
 			base.Enter();
 
-			_player = GameObject.FindGameObjectWithTag("Player").transform;
-			
 			CreateWaypoints();
 			SetWaypoint(0);
 		}
@@ -47,6 +50,11 @@ namespace Game.Behaviours.Enemy.AI.States
 			if (Mathf.Abs(distanceToWaypoint - _currentWaypointSetDistance)  > 10f)
 			{
 				SetNextWaypoint();
+			}
+
+			if (_visionSensor.IsPlayerInSight())
+			{
+				return typeof(ChaseState);
 			}
 			
 			return GetType();

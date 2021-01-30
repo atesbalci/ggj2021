@@ -1272,9 +1272,10 @@ GameObject:
   - component: {fileID: 5670024123987008148}
   - component: {fileID: 5036194584964907053}
   - component: {fileID: 5036194584964907052}
+  - component: {fileID: 5036194584964907049}
   - component: {fileID: 5036194584964907050}
   - component: {fileID: 5036194584964907048}
-  - component: {fileID: 5036194584964907049}
+  - component: {fileID: 727475705}
   m_Layer: 0
   m_Name: LaLlorona
   m_TagString: Untagged
@@ -1289,7 +1290,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5036194584964907054}
-  m_LocalRotation: {x: -0, y: -0.99996406, z: -0, w: -0.008480243}
+  m_LocalRotation: {x: -0, y: -0.99996406, z: 0, w: -0.008482108}
   m_LocalPosition: {x: -2.664, y: 0, z: 0.421}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1327,6 +1328,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &5036194584964907049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5036194584964907054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b6b6f3a7d649bdad5366cfb1de7943, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5036194584964907050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1351,7 +1364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39865b8a373a4d508297d4fe955a2d17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5036194584964907049
+--- !u!114 &727475705
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1360,9 +1373,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5036194584964907054}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8b6b6f3a7d649bdad5366cfb1de7943, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b34c40340c14b4e8b9680ddd5b261a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sightThreshold: 0.5
+  _distanceThreshold: 10
 --- !u!1 &5073344291900900546
 GameObject:
   m_ObjectHideFlags: 0
