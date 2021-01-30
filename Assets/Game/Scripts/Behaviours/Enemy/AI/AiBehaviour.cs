@@ -14,8 +14,8 @@ namespace Game.Behaviours.Enemy.AI
 		private MovementBehaviour  _movementBehaviour;
 		private AnimationBehaviour _animationBehaviour;
 		
-		private BaseStage       _currentStage;
-		private List<BaseStage> _stages; 
+		private BaseState       currentState;
+		private List<BaseState> _states; 
 		
 		private void Awake()
 		{
@@ -27,41 +27,41 @@ namespace Game.Behaviours.Enemy.AI
 
 		private void Update()
 		{
-			Type stageType = _currentStage.Tick();
+			Type stageType = currentState.Tick();
 			
-			if (stageType != _currentStage.GetType())
+			if (stageType != currentState.GetType())
 			{
-				EnterStage(GetStage(stageType));	
+				EnterState(GetState(stageType));	
 			}
 		}
 
 		private void CreateStages()
 		{
-			_stages = new List<BaseStage>()
+			_states = new List<BaseState>()
 			{
-				new EmptyStage(transform, _movementBehaviour),
-				new IdleStage(_movementBehaviour),
-				new StrafeStage(),
-				new ChaseStage(),
-				new CatchStage()
+				new EmptyState(transform, _movementBehaviour),
+				new IdleState(_movementBehaviour),
+				new StrafeState(),
+				new ChaseState(),
+				new CatchState()
 			};
 
-			EnterStage(_stages.First());
+			EnterState(_states.First());
 		}
 
-		private void EnterStage(BaseStage stage)
+		private void EnterState(BaseState state)
 		{
-			_currentStage?.Exit();
+			currentState?.Exit();
 			
-			_currentStage = stage;
-			_currentStage.Enter();
+			currentState = state;
+			currentState.Enter();
 			
-			Debug.Log($"[AiBehaviour] => Entered: {_currentStage.GetType()}");
+			Debug.Log($"[AiBehaviour] => Entered: {currentState.GetType()}");
 		}
 
-		private BaseStage GetStage(Type type)
+		private BaseState GetState(Type type)
 		{
-			return _stages.FirstOrDefault(item => item.GetType() == type);
+			return _states.FirstOrDefault(item => item.GetType() == type);
 		}
 	}
 }

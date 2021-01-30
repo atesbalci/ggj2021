@@ -2,7 +2,7 @@ using System;
 
 namespace Game.Behaviours.Enemy.AI.States
 {
-	public class CatchStage : BaseStage
+	public class ChaseState : BaseState
 	{
 		public override Type Tick()
 		{

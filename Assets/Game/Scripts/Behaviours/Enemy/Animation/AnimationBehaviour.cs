@@ -26,7 +26,7 @@ namespace Game.Behaviours.Enemy.Animation
 			_animator.SetTrigger(_idle);
 		}
 
-		public void SetVelocity(Vector3 velocity)
+		public void SetSpeed(float speed)
 		{
 			if (_isInIdle)
 			{
@@ -34,17 +34,18 @@ namespace Game.Behaviours.Enemy.Animation
 				_isInIdle = false;
 			}
 			
-			if (velocity.magnitude >= AiSettings.WALK_SPEED)
+			if(speed < float.Epsilon)
+			{
+				_animator.SetFloat(_speed, 0f);
+				PlayIdle();
+			}
+			else if (speed <= AiSettings.WALK_SPEED)
 			{
 				_animator.SetFloat(_speed, 1f);
 			}
-			else if (velocity.magnitude < AiSettings.RUN_SPEED || velocity.magnitude >= AiSettings.RUN_SPEED)
+			else if ( speed > AiSettings.WALK_SPEED || speed >= AiSettings.RUN_SPEED)
 			{
 				_animator.SetFloat(_speed, 2f);
-			}
-			else
-			{
-				_animator.SetFloat(_speed, 0f);
 			}
 		}
 	}

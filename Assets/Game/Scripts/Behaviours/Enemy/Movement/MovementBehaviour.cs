@@ -73,17 +73,21 @@ namespace Game.Behaviours.Enemy.Movement
 			_hasTarget   = true;
 			_targetPoint = targetPoint;
 			_targetSpeed = speed;
+			
+			AnimationBehaviour.SetSpeed(_targetSpeed);
 		}
 		
 		public void SetVelocity(Vector3 velocity)
 		{
 			Rigidbody.velocity = velocity;
-			if (velocity.magnitude > 0f)
+			if (velocity.magnitude > float.Epsilon)
 			{
 				transform.forward = Vector3.Lerp(transform.forward, velocity.normalized, Time.deltaTime * AiSettings.TURN_SPEED);
 			}
-
-			AnimationBehaviour.SetVelocity(Rigidbody.velocity);
+			else
+			{
+				AnimationBehaviour.SetSpeed(0f);	
+			}
 		}
 	}
 }

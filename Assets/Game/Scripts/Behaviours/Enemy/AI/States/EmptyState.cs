@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Game.Behaviours.Enemy.AI.States
 {
-	public class EmptyStage : BaseStage
+	public class EmptyState : BaseState
 	{
 		private Transform         _target;
 		private MovementBehaviour _movement;
 
 		private Vector3 _initialPosition;
 		
-		public EmptyStage(
+		public EmptyState(
 			Transform target,
 			MovementBehaviour movement)
 		{
@@ -31,7 +31,7 @@ namespace Game.Behaviours.Enemy.AI.States
 		{
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				return typeof(IdleStage);
+				return typeof(IdleState);
 			}
 			else
 			{

@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace Game.Behaviours.Enemy.AI
 {
-	public class IdleStage : BaseStage
+	public class IdleState : BaseState
 	{
 		private readonly MovementBehaviour _movement;
 		
-		public IdleStage(MovementBehaviour movement)
+		public IdleState(MovementBehaviour movement)
 		{
 			_movement = movement;
 		}
