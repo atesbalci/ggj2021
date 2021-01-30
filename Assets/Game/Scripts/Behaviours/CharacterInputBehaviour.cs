@@ -1,8 +1,9 @@
+using Game.Behaviours.Character;
 using UnityEngine;
 
 namespace Game.Behaviours
 {
-    [RequireComponent(typeof(CharacterController))]
+    [RequireComponent(typeof(CharacterController), typeof(CharacterInteractionBehaviour))]
     public class CharacterInputBehaviour : MonoBehaviour
     {
         public float walkingSpeed = 7.5f;
