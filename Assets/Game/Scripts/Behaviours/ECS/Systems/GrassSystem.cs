@@ -4,6 +4,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
+using Unity.Rendering;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -14,6 +15,18 @@ namespace Game.Behaviours.ECS.Systems
         public Entity GrassTemplateEntity { get; set; }
         public Transform PlayerTransform { get; set; }
 
+        private NativeArray<bool> _renderState;
+
+        protected override void OnCreate()
+        {
+            var entityQuery = GetEntityQuery(typeof(GrassComponent), typeof(Translation),  typeof(Rotation));
+            _renderState = new NativeArray<bool>(entityQuery.CalculateEntityCount(), Allocator.Persistent);
+            for (var i = 0; i < _renderState.Length; i++)
+            {
+                _renderState[i] = true;
+            }
+        }
+
         protected override void OnUpdate()
         {
             float3 playerLoc = PlayerTransform.position;
@@ -22,7 +35,12 @@ namespace Game.Behaviours.ECS.Systems
             float3 playerRight = PlayerTransform.right;
             float3 playerForward = PlayerTransform.forward;
             
-            var entityQuery = GetEntityQuery(typeof(GrassComponent), typeof(Translation),  typeof(Rotation));
+            var query = new EntityQueryDesc{
+                All = new ComponentType[] {typeof(GrassComponent), typeof(Translation),  typeof(Rotation)},
+                Options = EntityQueryOptions.IncludeDisabled
+            };
+            
+            var entityQuery = GetEntityQuery(query);
             var collidersQuery = GetEntityQuery(typeof(AABB));
             
             var translations = entityQuery.ToComponentDataArray<Translation>(Allocator.TempJob);
@@ -58,15 +76,21 @@ namespace Game.Behaviours.ECS.Systems
             var entities = entityQuery.ToEntityArray(Allocator.Temp);
             for (var i = 0; i < collisionResults.Length; i++)
             {
+                var translation = new Translation
+                {
+                    Value = nextPositions[i]
+                };
+                    
+                EntityManager.SetComponentData(entities[i], rotations[i]);
+                EntityManager.SetComponentData(entities[i], translation);
+                
                 if (!collisionResults[i])
                 {
-                    var translation = new Translation
-                    {
-                        Value = nextPositions[i]
-                    };
-                    
-                    EntityManager.SetComponentData(entities[i], rotations[i]);
-                    EntityManager.SetComponentData(entities[i], translation);
+                    EntityManager.RemoveComponent<Disabled>(entities[i]);
+                }
+                else
+                {
+                    EntityManager.AddComponent<Disabled>(entities[i]);
                 }
             }
             
