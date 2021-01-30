@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Game.Behaviours
 {
     [RequireComponent(typeof(CharacterController))]
-    public class CharacterBehaviour : MonoBehaviour
+    public class CharacterInputBehaviour : MonoBehaviour
     {
         public float walkingSpeed = 7.5f;
         public float runningSpeed = 11.5f;
