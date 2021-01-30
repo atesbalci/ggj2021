@@ -60,7 +60,7 @@ MonoBehaviour:
     m_Value: 250
   meanFreePath:
     m_OverrideState: 1
-    m_Value: 400
+    m_Value: 250
     min: 1
   enableVolumetricFog:
     m_OverrideState: 1
@@ -177,7 +177,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   rotation:
     m_OverrideState: 1
-    m_Value: 75
+    m_Value: 83
     min: 0
     max: 360
   skyIntensityMode:
