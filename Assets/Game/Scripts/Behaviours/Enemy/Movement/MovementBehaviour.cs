@@ -79,10 +79,11 @@ namespace Game.Behaviours.Enemy.Movement
 		
 		public void SetVelocity(Vector3 velocity)
 		{
-			Rigidbody.velocity = velocity;
+			Rigidbody.velocity = new Vector3(velocity.x, Rigidbody.velocity.y, velocity.z);
 			if (velocity.magnitude > float.Epsilon)
 			{
-				transform.forward = Vector3.Lerp(transform.forward, velocity.normalized, Time.deltaTime * AiSettings.TURN_SPEED);
+				Vector3 destLookDir = new Vector3(velocity.normalized.x, transform.forward.y, velocity.normalized.z);
+				transform.forward = Vector3.Lerp(transform.forward, destLookDir, Time.deltaTime * AiSettings.TURN_SPEED);
 			}
 			else
 			{
