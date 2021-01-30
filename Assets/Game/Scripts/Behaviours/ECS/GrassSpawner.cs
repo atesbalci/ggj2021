@@ -43,8 +43,8 @@ namespace Game.Behaviours.ECS
                 {
                     Value = loc
                 });
-                angle += Random.Range(Constants.GrassAngularGapMin, Constants.GrassAngularGapMax);
                 distance += distanceIncrement;
+                angle += Constants.GrassRadialGap / (Mathf.PI * distance);
             }
         }
     }

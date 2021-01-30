@@ -15,14 +15,30 @@ namespace Game.Behaviours.ECS.Systems
         {
             float3 playerLoc = PlayerTransform.position;
             playerLoc.y = 0f;
-            Entities.ForEach((ref GrassComponent grass, ref Translation translation) =>
+            float playerYRot = PlayerTransform.eulerAngles.y * Mathf.Deg2Rad;
+            float3 playerRightVec = PlayerTransform.right;
+            Entities.ForEach((ref GrassComponent grass, ref Translation translation, ref Rotation rotation) =>
             {
                 var vec = playerLoc - translation.Value;
-                if (math.lengthsq(vec) > Constants.MaxDistSq)
+                var distSq = math.lengthsq(vec);
+                if (distSq > Constants.MaxDistSq)
                 {
                     translation.Value = playerLoc + math.normalize(vec) * Constants.MaxDist;
                 }
-            }).Schedule();
+                
+                if (distSq < Constants.GrassCloseThresholdSq)
+                {
+                    rotation.Value = quaternion.Euler(
+                        0f,
+                        playerYRot,
+                        (1f - distSq / Constants.GrassCloseThresholdSq) * (math.PI / 12f) * (math.dot(playerRightVec, -vec) > 0 ? -1f : 1f),
+                        math.RotationOrder.ZYX);
+                }
+                else
+                {
+                    rotation.Value = quaternion.identity;
+                }
+            }).ScheduleParallel();
         }
     }
 }
