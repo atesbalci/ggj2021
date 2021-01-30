@@ -7,6 +7,8 @@ namespace Game.Behaviours.Enemy.Animation
 	{
 		private static readonly int _idle  = Animator.StringToHash("Idle");
 		private static readonly int _walk  = Animator.StringToHash("Walk");
+		private static readonly int _scare = Animator.StringToHash("Scare");
+		private static readonly int _agony = Animator.StringToHash("Agony");
 		private static readonly int _speed = Animator.StringToHash("Speed");
 
 		private Animator _animator;
@@ -26,6 +28,16 @@ namespace Game.Behaviours.Enemy.Animation
 			_animator.SetTrigger(_idle);
 		}
 
+		public void PlayScare()
+		{
+			_animator.SetTrigger(_scare);
+		}
+
+		public void PlayAgony()
+		{
+			_animator.SetTrigger(_agony);
+		}
+		
 		public void SetSpeed(float speed)
 		{
 			if (_isInIdle)

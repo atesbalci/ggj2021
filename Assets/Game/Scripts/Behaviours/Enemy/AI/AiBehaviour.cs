@@ -11,6 +11,7 @@ namespace Game.Behaviours.Enemy.AI
 	[RequireComponent(typeof(MovementBehaviour), typeof(AnimationBehaviour))]
 	public class AiBehaviour : MonoBehaviour
 	{
+		private Transform          _player;
 		private MovementBehaviour  _movementBehaviour;
 		private AnimationBehaviour _animationBehaviour;
 		
@@ -19,6 +20,7 @@ namespace Game.Behaviours.Enemy.AI
 		
 		private void Awake()
 		{
+			_player             = GameObject.FindGameObjectWithTag("Player").transform;
 			_movementBehaviour  = GetComponent<MovementBehaviour>();
 			_animationBehaviour = GetComponent<AnimationBehaviour>();
 			
@@ -40,8 +42,8 @@ namespace Game.Behaviours.Enemy.AI
 			_states = new List<BaseState>()
 			{
 				new EmptyState(transform, _movementBehaviour),
-				new IdleState(_movementBehaviour),
-				new StrafeState(),
+				new IdleState(_movementBehaviour, _animationBehaviour),
+				new StrafeState(transform, _movementBehaviour),
 				new ChaseState(),
 				new CatchState()
 			};
