@@ -1117,6 +1117,10 @@ PrefabInstance:
       propertyPath: _randomization
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1672920356337273977, guid: c8a4f2d2f29bfd7428c62a5d4b5f166a, type: 3}
+      propertyPath: _activationDistance
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1672920356337273978, guid: c8a4f2d2f29bfd7428c62a5d4b5f166a, type: 3}
       propertyPath: m_Radius
       value: 10.21
@@ -8270,6 +8274,10 @@ PrefabInstance:
       propertyPath: _randomization
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1672920356337273977, guid: c8a4f2d2f29bfd7428c62a5d4b5f166a, type: 3}
+      propertyPath: _activationDistance
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1672920356337273978, guid: c8a4f2d2f29bfd7428c62a5d4b5f166a, type: 3}
       propertyPath: m_Radius
       value: 8.42
@@ -9857,6 +9865,10 @@ PrefabInstance:
     - target: {fileID: 1672920356337273977, guid: c8a4f2d2f29bfd7428c62a5d4b5f166a, type: 3}
       propertyPath: _randomization
       value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1672920356337273977, guid: c8a4f2d2f29bfd7428c62a5d4b5f166a, type: 3}
+      propertyPath: _activationDistance
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1672920356337273981, guid: c8a4f2d2f29bfd7428c62a5d4b5f166a, type: 3}
       propertyPath: m_RootOrder
