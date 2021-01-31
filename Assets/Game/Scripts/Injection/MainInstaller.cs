@@ -1,4 +1,5 @@
 ﻿using Game.Behaviours.Game;
+using Game.Controllers;
 using Game.Helpers.Audio;
 using Game.Helpers.Audio.Impl;
 using Game.Models;
@@ -21,6 +22,8 @@ namespace Game.Injection
             Container.Bind<AmbientAudioView>().AsSingle().NonLazy();
             Container.BindInstance(_playerTransform).AsSingle();
             Container.BindInterfacesAndSelfTo<GameBehaviour>().AsSingle().NonLazy();
+            
+            Container.Bind<LevelFinishController>().AsSingle().NonLazy();
         }
 
         private void InstallParent()

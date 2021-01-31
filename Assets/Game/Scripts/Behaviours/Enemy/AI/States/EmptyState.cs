@@ -29,14 +29,16 @@ namespace Game.Behaviours.Enemy.AI.States
 
 		public override Type Tick()
 		{
-			if (Input.GetKeyDown(KeyCode.Space))
-			{
-				return typeof(IdleState);
-			}
-			else
-			{
-				return GetType();
-			}
+			return typeof(IdleState);
+
+			// if (Input.GetKeyDown(KeyCode.Space))
+			// {
+			// 	return typeof(IdleState);
+			// }
+			// else
+			// {
+			// 	return GetType();
+			// }
 		}
 
 		public override void Exit()

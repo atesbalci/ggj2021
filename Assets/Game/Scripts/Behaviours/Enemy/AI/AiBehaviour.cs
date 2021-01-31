@@ -12,6 +12,8 @@ namespace Game.Behaviours.Enemy.AI
 	[RequireComponent(typeof(MovementBehaviour), typeof(AnimationBehaviour))]
 	public class AiBehaviour : MonoBehaviour
 	{
+		public static Action OnPlayerCatched;
+		
 		private Transform          _player;
 		private MovementBehaviour  _movementBehaviour;
 		private AnimationBehaviour _animationBehaviour;

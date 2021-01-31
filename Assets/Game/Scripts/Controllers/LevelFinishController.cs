@@ -1,30 +1,39 @@
-using System;
+using Game.Behaviours.Enemy.AI;
 using Game.Behaviours.Interactable;
-using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game.Controllers
 {
-	public class LevelFinishController : MonoBehaviour
+	public class LevelFinishController
 	{
-		[SerializeField] private int _requiredCollectableCount;
+		private readonly int _requiredCollectableCount = 2;
 
 		private int _currentCollectableCount;
 
-		private void Awake()
+		public LevelFinishController()
 		{
 			_currentCollectableCount = 0;
 			
-			Collectable.OnCollected += Collectable_OnCollected;
+			Collectable.OnCollected     += Collectable_OnCollected;
+			AiBehaviour.OnPlayerCatched += AiBehaviour_OnPlayerCatched;
 		}
 		
-		private void OnDestroy()
+		~LevelFinishController()
 		{
-			Collectable.OnCollected -= Collectable_OnCollected;
+			Collectable.OnCollected     -= Collectable_OnCollected;
+			AiBehaviour.OnPlayerCatched -= AiBehaviour_OnPlayerCatched;
 		}
 
-		private void FinishLevel()
+		private void FinishLevel(bool isSuccessful)
 		{
-			
+			if (isSuccessful)
+			{
+				
+			}
+			else
+			{
+				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			}
 		}
 		
 		private void Collectable_OnCollected(Collectable collectable)
@@ -33,8 +42,13 @@ namespace Game.Controllers
 
 			if (_currentCollectableCount >= _requiredCollectableCount)
 			{
-				FinishLevel();
+				FinishLevel(true);
 			}
+		}
+		
+		private void AiBehaviour_OnPlayerCatched()
+		{
+			FinishLevel(false);
 		}
 	}
 }

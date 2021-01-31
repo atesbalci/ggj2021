@@ -39,7 +39,7 @@ namespace Game.Behaviours.Enemy.AI
 
 		public override Type Tick()
 		{
-			if (Time.time - _stateEnterTime > 8f)
+			if (Time.time - _stateEnterTime > 5f)
 			{
 				// Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				// if (Physics.Raycast(ray, out RaycastHit hit))
