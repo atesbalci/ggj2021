@@ -36,7 +36,7 @@ namespace Game.Behaviours.Enemy.AI.States
 			CharacterInputBehaviour characterInputBehaviour = _player.GetComponent<CharacterInputBehaviour>();
 			characterInputBehaviour.enabled = false;
 
-			Vector3 targetPosition = _player.position + _player.forward * 0.625f;
+			Vector3 targetPosition = _player.position + _player.forward * 0.75f;
 			targetPosition = new Vector3(targetPosition.x, 0f, targetPosition.z);
 			
 			float moveStartTime = Time.time;
@@ -51,8 +51,8 @@ namespace Game.Behaviours.Enemy.AI.States
 				Transform camera = _player.GetComponentInChildren<Camera>().transform;
 				_owner.forward = -camera.forward;
 
-				_player.LookAt(_owner.transform.position + Vector3.up * 1f);
-				camera.LookAt(_owner.transform.position + Vector3.up * 1f);
+				_player.LookAt(_owner.transform.position + Vector3.up * 1.5f);
+				camera.LookAt(_owner.transform.position + Vector3.up * 1.5f);
 
 				_animationBehaviour.PlayAgony();
 				AiBehaviour.OnPlayerCatched?.Invoke();
