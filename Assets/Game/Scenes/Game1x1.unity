@@ -229,7 +229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioClipsDataObject: {fileID: 11400000, guid: e62f76db9b7b39046801a790b5171acb, type: 2}
   _playerTransform: {fileID: 366251434}
-  _boundsBehaviour: {fileID: 0}
+  _boundsBehaviour: {fileID: 693275461}
 --- !u!114 &29428777
 MonoBehaviour:
   m_ObjectHideFlags: 0
