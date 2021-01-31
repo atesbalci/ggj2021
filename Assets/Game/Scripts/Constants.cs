@@ -8,14 +8,14 @@
         public const float GrassRadialGap = 7.5f;
         public const int PlayerGrassPoolSize = 1000;
         public const float GrassCloseThresholdSq = 1.25f;
-        
-        // Bounds
-        public const float BoundFarDistance = 20f;
-        public const float BoundMidDistance = 15f;
-        public const float BoundCloseDistance = 10f;
         public const float BoundDeathDistance = 1f;
-        public const float BoundFarClipInterval = 1f;
-        public const float BoundMidClipInterval = 0.5f;
-        public const float BoundCloseClipInterval = 0.25f;
+        
+        public const float EnemyFarDistance = 20f;
+        public const float EnemyMidDistance = 15f;
+        public const float EnemyCloseDistance = 10f;
+        public const float EnemyDeathDistance = 1f;
+        public const float EnemyFarClipInterval = 1f;
+        public const float EnemyMidClipInterval = 0.5f;
+        public const float EnemyCloseClipInterval = 0.25f;
     }
 }

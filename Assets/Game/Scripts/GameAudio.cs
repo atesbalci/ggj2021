@@ -12,5 +12,6 @@
         public const int Insects = 7;
         public const int Scream = 8;
         public const int Chase = 9;
+        public const int Paper = 10;
     }
 }

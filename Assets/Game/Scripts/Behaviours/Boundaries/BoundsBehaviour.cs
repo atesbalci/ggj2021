@@ -6,13 +6,12 @@ namespace Game.Behaviours.Boundaries
     [RequireComponent(typeof(Collider))]
     public class BoundsBehaviour : MonoBehaviour
     {
-        public event Action<BoundDistanceZone> DistanceZoneChange;
-        
+        public event Action Death;
+
         [SerializeField] private Transform _playerTransform;
-        
+
         private Bounds _bounds;
-        private BoundDistanceZone _currentZone;
-        
+
         private void Awake()
         {
             _bounds = GetComponent<Collider>().bounds;
@@ -25,7 +24,7 @@ namespace Game.Behaviours.Boundaries
         {
             var size = _bounds.size;
             var playerPos = _playerTransform.position;
-            var playerPoints = new []
+            var playerPoints = new[]
             {
                 new Vector3(-size.x, playerPos.y, playerPos.z),
                 new Vector3(size.x, playerPos.y, playerPos.z),
@@ -44,43 +43,10 @@ namespace Game.Behaviours.Boundaries
             }
 
             var minDist = Mathf.Sqrt(minDistSq);
-            UpdateDistanceToBounds(minDist);
-        }
-
-        private void UpdateDistanceToBounds(float distance)
-        {
-            var newZone = BoundDistanceZone.None;
-            if (distance < Constants.BoundDeathDistance)
+            if (minDist < Constants.BoundDeathDistance)
             {
-                newZone = BoundDistanceZone.Death;
-            }
-            else if (distance < Constants.BoundCloseDistance)
-            {
-                newZone = BoundDistanceZone.Close;
-            }
-            else if (distance < Constants.BoundMidDistance)
-            {
-                newZone = BoundDistanceZone.Mid;
-            }
-            else if (distance < Constants.BoundFarDistance)
-            {
-                newZone = BoundDistanceZone.Far;
-            }
-
-            if (newZone != _currentZone)
-            {
-                _currentZone = newZone;
-                DistanceZoneChange?.Invoke(_currentZone);
+                Death?.Invoke();
             }
         }
-    }
-        
-    public enum BoundDistanceZone
-    {
-        None = 0,
-        Far,
-        Mid,
-        Close,
-        Death
     }
 }

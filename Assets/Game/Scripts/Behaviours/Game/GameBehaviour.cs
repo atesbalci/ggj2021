@@ -10,7 +10,7 @@ namespace Game.Behaviours.Game
     {
         public GameBehaviour(Transform playerTransform, GameStateData gameStateData, BoundsBehaviour boundsBehaviour)
         {
-            boundsBehaviour.DistanceZoneChange += OnBoundsDistanceZoneChange;
+            boundsBehaviour.Death += OnDeath;
             var spawnPoint = gameStateData.LastCheckpoint;
             if (spawnPoint.HasValue)
             {
@@ -18,12 +18,9 @@ namespace Game.Behaviours.Game
             }
         }
 
-        private void OnBoundsDistanceZoneChange(BoundDistanceZone zone)
+        private void OnDeath()
         {
-            if (zone == BoundDistanceZone.Death)
-            {
-                Restart();
-            }
+            Restart();
         }
 
         public void Tick()

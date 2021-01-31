@@ -22,6 +22,7 @@ namespace Game.Views.Character
         public void Initialize(IAudioManager audioManager)
         {
             _audioManager = audioManager;
+            
         }
 
         private void Update()

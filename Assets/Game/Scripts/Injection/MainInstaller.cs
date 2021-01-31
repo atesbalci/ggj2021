@@ -5,6 +5,7 @@ using Game.Helpers.Audio;
 using Game.Helpers.Audio.Impl;
 using Game.Models;
 using Game.Views.Ambient;
+using Game.Views.Collectables;
 using UnityEngine;
 using Zenject;
 
@@ -25,6 +26,7 @@ namespace Game.Injection
             Container.BindInstance(_playerTransform).AsSingle();
             Container.BindInterfacesAndSelfTo<GameBehaviour>().AsSingle().NonLazy();
             Container.BindInstance(_boundsBehaviour).AsSingle();
+            Container.Bind<CollectableAudioView>().AsSingle().NonLazy();
             
             Container.Bind<LevelFinishController>().AsSingle().NonLazy();
         }
