@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-namespace Game.Views
+namespace Game.Views.Character
 {
     public class CharacterAudioView : MonoBehaviour
     {

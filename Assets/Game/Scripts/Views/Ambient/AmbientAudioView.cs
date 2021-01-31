@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using Game.Helpers.Audio;
 
-namespace Game.Views
+namespace Game.Views.Ambient
 {
     public class AmbientAudioView
     {

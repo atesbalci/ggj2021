@@ -43,6 +43,7 @@ namespace Game.Behaviours.ECS
                 {
                     Value = loc
                 });
+                _entityManager.AddComponentData(grassEntity, new Disabled());
                 distance += distanceIncrement;
                 angle += Constants.GrassRadialGap / (Mathf.PI * distance);
             }
