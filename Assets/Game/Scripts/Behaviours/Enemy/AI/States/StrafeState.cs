@@ -18,6 +18,8 @@ namespace Game.Behaviours.Enemy.AI.States
 		private float         _currentWaypointSetDistance;
 		private List<Vector3> _relativeWaypoints;
 
+		private float _stateEnterTime;
+		
 		public StrafeState(
 			Transform owner,
 			Transform player,
@@ -34,6 +36,8 @@ namespace Game.Behaviours.Enemy.AI.States
 		{
 			base.Enter();
 
+			_stateEnterTime = Time.time;
+			
 			CreateWaypoints();
 			SetWaypoint(0);
 		}
@@ -59,7 +63,7 @@ namespace Game.Behaviours.Enemy.AI.States
 				SetNextWaypoint();
 			}
 
-			if (_visionSensor.IsPlayerInSight())
+			if (Time.time - _stateEnterTime > 4f && _visionSensor.IsPlayerInSight())
 			{
 				return typeof(ChaseState);
 			}
