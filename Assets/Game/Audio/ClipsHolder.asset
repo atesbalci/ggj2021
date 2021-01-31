@@ -54,7 +54,7 @@ MonoBehaviour:
     AudioMixerGroup: {fileID: -8743201246572769456, guid: 72e2ef5d9893f694a8947a21d5bba33c, type: 2}
   - AudioClips:
     - {fileID: 8300000, guid: 2d6312317186cff46a722b4f10c00095, type: 3}
-    Volume: 0.5
+    Volume: 0.01
     AudioMixerGroup: {fileID: -8743201246572769456, guid: 72e2ef5d9893f694a8947a21d5bba33c, type: 2}
   - AudioClips:
     - {fileID: 8300000, guid: 12a85bf5dc4ad014fa70ec90d2209472, type: 3}
