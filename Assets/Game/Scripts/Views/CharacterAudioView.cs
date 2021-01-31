@@ -2,9 +2,9 @@
 using UnityEngine;
 using Zenject;
 
-namespace Game.Behaviours
+namespace Game.Views
 {
-    public class CharacterAudioBehaviour : MonoBehaviour
+    public class CharacterAudioView : MonoBehaviour
     {
         private const float FootStepFrequency = 1.5f;
         private const float FootStepFrequencySq = FootStepFrequency * FootStepFrequency;
@@ -35,7 +35,7 @@ namespace Game.Behaviours
                 _audioManager.Play(GameAudio.FootStep).Pitch = 1f + Random.Range(-1f, 1f) * FootStepPitchVariance;
             }
             
-            if ((_lastBushNoisePos - pos2d).sqrMagnitude > FootStepFrequencySq)
+            if ((_lastBushNoisePos - pos2d).sqrMagnitude > BushNoiseFrequencySq)
             {
                 _lastBushNoisePos = pos2d;
                 _audioManager.Play(GameAudio.BushNoise);
