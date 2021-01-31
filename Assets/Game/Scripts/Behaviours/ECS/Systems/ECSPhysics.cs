@@ -35,6 +35,11 @@ namespace Game.Behaviours.ECS.Systems
                    (box1.Min.z <= box2.Max.z && box1.Max.z >= box2.Min.z);
         }
         
+        public static bool Intersect(float3 point, Sphere sphere)
+        {
+            var dis = math.distance(sphere.Center, point);
+            return dis < sphere.Radius;
+        }
         public static bool Intersect(float3 point, AABB box2)
         {
             return (point.x <= box2.Max.x && point.x >= box2.Min.x) &&

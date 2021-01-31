@@ -17,8 +17,6 @@ namespace Game.Behaviours.ECS.Systems
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
             var bounds = _collider.bounds;
-            var position = transform.position;
-            
             var aabb = new AABB
             {
                 Min = bounds.min,

@@ -14,19 +14,7 @@ namespace Game.Behaviours.ECS.Systems
     {
         public Entity GrassTemplateEntity { get; set; }
         public Transform PlayerTransform { get; set; }
-
-        private NativeArray<bool> _renderState;
-
-        protected override void OnCreate()
-        {
-            var entityQuery = GetEntityQuery(typeof(GrassComponent), typeof(Translation),  typeof(Rotation));
-            _renderState = new NativeArray<bool>(entityQuery.CalculateEntityCount(), Allocator.Persistent);
-            for (var i = 0; i < _renderState.Length; i++)
-            {
-                _renderState[i] = true;
-            }
-        }
-
+        
         protected override void OnUpdate()
         {
             float3 playerLoc = PlayerTransform.position;
@@ -41,10 +29,12 @@ namespace Game.Behaviours.ECS.Systems
             };
             
             var entityQuery = GetEntityQuery(query);
-            var collidersQuery = GetEntityQuery(typeof(AABB));
+            var AABBQuery = GetEntityQuery(typeof(AABB));
+            var sphereQuery = GetEntityQuery(typeof(Sphere));
             
             var translations = entityQuery.ToComponentDataArray<Translation>(Allocator.TempJob);
-            var colliders = collidersQuery.ToComponentDataArray<AABB>(Allocator.TempJob);
+            var aabbColliders = AABBQuery.ToComponentDataArray<AABB>(Allocator.TempJob);
+            var sphereColliders = sphereQuery.ToComponentDataArray<Sphere>(Allocator.TempJob);
             
             var rotations = new NativeArray<Rotation>(translations.Length, Allocator.TempJob);
             var collisionResults = new NativeArray<bool>(translations.Length, Allocator.TempJob);
@@ -65,7 +55,8 @@ namespace Game.Behaviours.ECS.Systems
             
             var collisionCheckJob = new AABBCollisionJob
             {
-                Colliders = colliders,
+                AABBColliders = aabbColliders,
+                SphereColliders = sphereColliders,
                 NextPositions = nextPositions,
                 CollisionResult = collisionResults,
             };
@@ -96,7 +87,8 @@ namespace Game.Behaviours.ECS.Systems
             
             entities.Dispose();
             translations.Dispose();
-            colliders.Dispose();
+            aabbColliders.Dispose();
+            sphereColliders.Dispose();
             rotations.Dispose();
             collisionResults.Dispose();
             nextPositions.Dispose();
@@ -150,15 +142,24 @@ namespace Game.Behaviours.ECS.Systems
         [BurstCompile]
         private struct AABBCollisionJob : IJobParallelFor
         {
-            [ReadOnly] public NativeArray<AABB> Colliders;
+            [ReadOnly] public NativeArray<AABB> AABBColliders;
+            [ReadOnly] public NativeArray<Sphere> SphereColliders;
             [ReadOnly] public NativeArray<float3> NextPositions;
             public NativeArray<bool> CollisionResult;
 
             public void Execute(int i)
             {
-                for (int j = 0; j < Colliders.Length; j++)
+                for (int j = 0; j < AABBColliders.Length; j++)
                 {
-                    if (ECSPhysics.Intersect(NextPositions[i], Colliders[j]))
+                    if (ECSPhysics.Intersect(NextPositions[i], AABBColliders[j]))
+                    {
+                        CollisionResult[i] = true;
+                    }
+                }
+                
+                for (int j = 0; j < SphereColliders.Length; j++)
+                {
+                    if (ECSPhysics.Intersect(NextPositions[i], SphereColliders[j]))
                     {
                         CollisionResult[i] = true;
                     }
