@@ -48,7 +48,7 @@ namespace Game.Behaviours.Enemy.AI
 				new IdleState(_movementBehaviour, _animationBehaviour),
 				new StrafeState(transform, _player, _movementBehaviour, _visionSensor),
 				new ChaseState(_player, _movementBehaviour, _visionSensor),
-				new CatchState(_animationBehaviour, _movementBehaviour)
+				new CatchState(transform, _player, _animationBehaviour, _movementBehaviour)
 			};
 
 			EnterState(_states.First());

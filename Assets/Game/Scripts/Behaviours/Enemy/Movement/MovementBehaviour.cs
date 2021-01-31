@@ -64,6 +64,7 @@ namespace Game.Behaviours.Enemy.Movement
 
 		public void Deactivate()
 		{
+			_hasTarget            = false;
 			_previousContraints   = Rigidbody.constraints;
 			Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 		}
