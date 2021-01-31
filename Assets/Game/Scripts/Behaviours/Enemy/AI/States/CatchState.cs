@@ -49,7 +49,7 @@ namespace Game.Behaviours.Enemy.AI.States
 				_owner.GetComponentInChildren<Light>(true).gameObject.SetActive(true);
 				_owner.forward = -_player.GetComponentInChildren<Camera>().transform.forward;
 				_animationBehaviour.PlayAgony();
-				DOVirtual.DelayedCall(4f, () => AiBehaviour.OnPlayerCatched?.Invoke());
+				AiBehaviour.OnPlayerCatched?.Invoke();
 			});
 		}
 

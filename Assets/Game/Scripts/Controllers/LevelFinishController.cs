@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Game.Behaviours.Enemy.AI;
 using Game.Behaviours.Interactable;
 using Game.Models;
@@ -7,7 +8,7 @@ namespace Game.Controllers
 {
 	public class LevelFinishController
 	{
-		private const int RequiredCollectableCount = 2;
+		public const int REQUIRED_COLLECTABLE_COUNT = 6;
 
 		private readonly GameStateData _gameStateData;
 
@@ -40,7 +41,7 @@ namespace Game.Controllers
 		private void Collectable_OnCollected(Collectable collectable)
 		{
 			_gameStateData.PickCollectable();
-			if (_gameStateData.GetPickedCollectableCount() >= RequiredCollectableCount)
+			if (_gameStateData.GetPickedCollectableCount() >= REQUIRED_COLLECTABLE_COUNT)
 			{
 				FinishLevel(true);
 			}
@@ -48,7 +49,7 @@ namespace Game.Controllers
 		
 		private void AiBehaviour_OnPlayerCatched()
 		{
-			FinishLevel(false);
+			DOVirtual.DelayedCall(4f, () => FinishLevel(false));
 		}
 	}
 }
