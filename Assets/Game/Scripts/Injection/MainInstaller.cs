@@ -1,4 +1,5 @@
-﻿using Game.Behaviours.Game;
+﻿using Game.Behaviours.Boundaries;
+using Game.Behaviours.Game;
 using Game.Controllers;
 using Game.Helpers.Audio;
 using Game.Helpers.Audio.Impl;
@@ -13,6 +14,7 @@ namespace Game.Injection
     {
         [SerializeField] private AudioClipsDataObject _audioClipsDataObject;
         [SerializeField] private Transform _playerTransform;
+        [SerializeField] private BoundsBehaviour _boundsBehaviour;
         
         public override void InstallBindings()
         {
@@ -22,6 +24,7 @@ namespace Game.Injection
             Container.Bind<AmbientAudioView>().AsSingle().NonLazy();
             Container.BindInstance(_playerTransform).AsSingle();
             Container.BindInterfacesAndSelfTo<GameBehaviour>().AsSingle().NonLazy();
+            Container.BindInstance(_boundsBehaviour).AsSingle();
             
             Container.Bind<LevelFinishController>().AsSingle().NonLazy();
         }

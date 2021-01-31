@@ -13,6 +13,7 @@
         public const float BoundFarDistance = 20f;
         public const float BoundMidDistance = 15f;
         public const float BoundCloseDistance = 10f;
+        public const float BoundDeathDistance = 1f;
         public const float BoundFarClipInterval = 1f;
         public const float BoundMidClipInterval = 0.5f;
         public const float BoundCloseClipInterval = 0.25f;

@@ -3,6 +3,7 @@
     public interface IAudioManager
     {
         IAudioPlaybackInstance Play(int clip, bool loops = false);
+        void StopAndClearAll();
     }
 
     public interface IAudioPlaybackInstance

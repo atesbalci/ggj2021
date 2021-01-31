@@ -1276,6 +1276,7 @@ GameObject:
   - component: {fileID: 5036194584964907050}
   - component: {fileID: 5036194584964907048}
   - component: {fileID: 727475705}
+  - component: {fileID: 7784294310501294480}
   m_Layer: 0
   m_Name: LaLlorona
   m_TagString: Untagged
@@ -1379,6 +1380,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sightThreshold: 0.5
   _distanceThreshold: 20
+--- !u!114 &7784294310501294480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5036194584964907054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c48be8dea3a4a268a624a975b308d78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5073344291900900546
 GameObject:
   m_ObjectHideFlags: 0

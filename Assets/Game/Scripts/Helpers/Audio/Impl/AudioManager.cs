@@ -44,6 +44,16 @@ namespace Game.Helpers.Audio.Impl
             return new Playback(currentSource);
         }
 
+        public void StopAndClearAll()
+        {
+            foreach (var audioSource in _audioSources)
+            {
+                audioSource.Stop();
+                audioSource.loop = false;
+                audioSource.clip = null;
+            }
+        }
+
         private class Playback : IAudioPlaybackInstance
         {
             private readonly AudioSource _audioSource;

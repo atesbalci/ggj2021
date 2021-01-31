@@ -10,5 +10,7 @@
         public const int Crow = 5;
         public const int Wind = 6;
         public const int Insects = 7;
+        public const int Scream = 8;
+        public const int Chase = 9;
     }
 }

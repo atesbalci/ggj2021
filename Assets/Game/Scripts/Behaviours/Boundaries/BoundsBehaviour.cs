@@ -50,7 +50,11 @@ namespace Game.Behaviours.Boundaries
         private void UpdateDistanceToBounds(float distance)
         {
             var newZone = BoundDistanceZone.None;
-            if (distance < Constants.BoundCloseDistance)
+            if (distance < Constants.BoundDeathDistance)
+            {
+                newZone = BoundDistanceZone.Death;
+            }
+            else if (distance < Constants.BoundCloseDistance)
             {
                 newZone = BoundDistanceZone.Close;
             }
@@ -76,6 +80,7 @@ namespace Game.Behaviours.Boundaries
         None = 0,
         Far,
         Mid,
-        Close
+        Close,
+        Death
     }
 }
