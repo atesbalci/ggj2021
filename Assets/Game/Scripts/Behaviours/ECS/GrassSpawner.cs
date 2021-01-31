@@ -43,6 +43,16 @@ namespace Game.Behaviours.ECS
                 {
                     Value = loc
                 });
+                
+                var grassData = new GrassData()
+                {
+                    IsDynamic = true,
+                    SwayDuration = 0,
+                };
+                
+                _entityManager.AddComponent<GrassData>(grassEntity);
+                _entityManager.SetComponentData(grassEntity, grassData);
+                
                 _entityManager.AddComponentData(grassEntity, new Disabled());
                 distance += distanceIncrement;
                 angle += Constants.GrassRadialGap / (Mathf.PI * distance);

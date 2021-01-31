@@ -23,7 +23,7 @@ namespace Game.Behaviours.ECS.Systems
             float3 playerForward = PlayerTransform.forward;
             
             var query = new EntityQueryDesc{
-                All = new ComponentType[] {typeof(GrassComponent), typeof(Translation),  typeof(Rotation)},
+                All = new ComponentType[] {typeof(GrassComponent), typeof(Translation),  typeof(Rotation), typeof(GrassData)},
                 Options = EntityQueryOptions.IncludeDisabled
             };
             
@@ -32,6 +32,7 @@ namespace Game.Behaviours.ECS.Systems
             var sphereQuery = GetEntityQuery(typeof(Sphere));
             
             var translations = entityQuery.ToComponentDataArray<Translation>(Allocator.TempJob);
+            var grassData = entityQuery.ToComponentDataArray<GrassData>(Allocator.TempJob);
             var aabbColliders = AABBQuery.ToComponentDataArray<AABB>(Allocator.TempJob);
             var sphereColliders = sphereQuery.ToComponentDataArray<Sphere>(Allocator.TempJob);
             
@@ -47,6 +48,7 @@ namespace Game.Behaviours.ECS.Systems
                 Translations = translations,
                 NextPositions = nextPositions,
                 Rotations = rotations,
+                GrassData = grassData,
             };
             
             var distanceCheckHandle = distanceCheckJob.Schedule(translations.Length, 32);
@@ -72,8 +74,14 @@ namespace Game.Behaviours.ECS.Systems
                 };
                     
                 EntityManager.SetComponentData(entities[i], rotations[i]);
-                EntityManager.SetComponentData(entities[i], translation);
+
+                if (!grassData[i].IsDynamic)
+                {
+                    continue;
+                }
                 
+                EntityManager.SetComponentData(entities[i], translation);
+
                 if (!collisionResults[i])
                 {
                     EntityManager.RemoveComponent<Disabled>(entities[i]);
@@ -88,6 +96,7 @@ namespace Game.Behaviours.ECS.Systems
             translations.Dispose();
             aabbColliders.Dispose();
             sphereColliders.Dispose();
+            grassData.Dispose();
             rotations.Dispose();
             collisionResults.Dispose();
             nextPositions.Dispose();
@@ -101,20 +110,25 @@ namespace Game.Behaviours.ECS.Systems
             [ReadOnly] public NativeArray<Translation> Translations;
             public NativeArray<float3> NextPositions;
             public NativeArray<Rotation> Rotations;
+            public NativeArray<GrassData> GrassData;
             
             public void Execute(int i)
             {
                 var direction = PlayerLoc - Translations[i].Value;
                 var distance = math.lengthsq(direction);
-                if (distance > Constants.MaxDistSq)
+
+                if (GrassData[i].IsDynamic)
                 {
-                    NextPositions[i] = PlayerLoc + math.normalize(direction) * Constants.MaxDist;
+                    if (distance > Constants.MaxDistSq)
+                    {
+                        NextPositions[i] = PlayerLoc + math.normalize(direction) * Constants.MaxDist;
+                    }
+                    else
+                    {
+                        NextPositions[i] = Translations[i].Value;
+                    }
                 }
-                else
-                {
-                    NextPositions[i] = Translations[i].Value;
-                }
-                
+
                 if (distance < Constants.GrassCloseThresholdSq)
                 {
                     var rotation = new Rotation
@@ -123,7 +137,7 @@ namespace Game.Behaviours.ECS.Systems
                             (1f - distance / Constants.GrassCloseThresholdSq) * (math.PI / 6f) *
                             (math.dot(PlayerRight, -direction) > 0 ? -1f : 1f)),
                     };
-                    
+
                     Rotations[i] = rotation;
                 }
                 else
@@ -132,7 +146,7 @@ namespace Game.Behaviours.ECS.Systems
                     {
                         Value = quaternion.identity
                     };
-                    
+
                     Rotations[i] = rotation;
                 }
             }
@@ -165,5 +179,11 @@ namespace Game.Behaviours.ECS.Systems
                 }
             }
         }
+    }
+
+    public struct GrassData : IComponentData
+    {
+        public bool IsDynamic;
+        public float SwayDuration;
     }
 }
