@@ -10,6 +10,8 @@ namespace Game.Behaviours.Enemy.AI.States
 		private readonly Transform         _player;
 		private readonly MovementBehaviour _movement;
 
+		private float _stateEnterTime;
+		
 		public EmptyState(
 			Transform owner,
 			Transform player,
@@ -22,6 +24,8 @@ namespace Game.Behaviours.Enemy.AI.States
 		
 		public override void Enter()
 		{
+			_stateEnterTime = Time.time;
+			
 			_owner.position   = _owner.forward * 2000f;
 			
 			_movement.Deactivate();
@@ -29,16 +33,23 @@ namespace Game.Behaviours.Enemy.AI.States
 
 		public override Type Tick()
 		{
-			return typeof(IdleState);
-
-			// if (Input.GetKeyDown(KeyCode.Space))
-			// {
-			// 	return typeof(IdleState);
-			// }
-			// else
-			// {
-			// 	return GetType();
-			// }
+			if (Time.time - _stateEnterTime > 20f)
+			{
+				return GetType();
+			}
+			else
+			{
+				return typeof(IdleState);
+			}
+			
+			if (Input.GetKeyDown(KeyCode.Space))
+			{
+				return typeof(IdleState);
+			}
+			else
+			{
+				return GetType();
+			}
 		}
 
 		public override void Exit()
