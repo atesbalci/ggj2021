@@ -7,7 +7,7 @@
         public const float MaxDistSq = MaxDist * MaxDist;
         public const float GrassRadialGap = 7.5f;
         public const int PlayerGrassPoolSize = 1000;
-        public const float GrassCloseThresholdSq = 0.5f;
+        public const float GrassCloseThresholdSq = 1.25f;
         
         // Bounds
         public const float BoundFarDistance = 20f;

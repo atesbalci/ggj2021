@@ -4,7 +4,6 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
-using Unity.Rendering;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -121,7 +120,7 @@ namespace Game.Behaviours.ECS.Systems
                     var rotation = new Rotation
                     {
                         Value = quaternion.AxisAngle(PlayerForward,
-                            (1f - distance / Constants.GrassCloseThresholdSq) * (math.PI / 12f) *
+                            (1f - distance / Constants.GrassCloseThresholdSq) * (math.PI / 6f) *
                             (math.dot(PlayerRight, -direction) > 0 ? -1f : 1f)),
                     };
                     
