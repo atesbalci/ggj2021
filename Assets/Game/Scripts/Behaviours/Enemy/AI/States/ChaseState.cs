@@ -7,6 +7,9 @@ namespace Game.Behaviours.Enemy.AI.States
 {
 	public class ChaseState : BaseState
 	{
+		public static event Action OnEnter;
+		public static event Action OnExit;
+		
 		private readonly Transform         _player;
 		private readonly MovementBehaviour _movementBehaviour;
 		private readonly VisionSensor      _visionSensor;
@@ -24,6 +27,15 @@ namespace Game.Behaviours.Enemy.AI.States
 		public override void Enter()
 		{
 			base.Enter();
+			
+			OnEnter?.Invoke();
+		}
+
+		public override void Exit()
+		{
+			base.Exit();
+			
+			OnExit?.Invoke();
 		}
 
 		public override Type Tick()
