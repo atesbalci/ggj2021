@@ -47,7 +47,13 @@ namespace Game.Behaviours.Enemy.AI.States
 	         }).OnComplete(() =>
 			{
 				_owner.GetComponentInChildren<Light>(true).gameObject.SetActive(true);
-				_owner.forward = -_player.GetComponentInChildren<Camera>().transform.forward;
+
+				Transform camera = _player.GetComponentInChildren<Camera>().transform;
+				_owner.forward = -camera.forward;
+
+				_player.LookAt(_owner.transform.position + Vector3.up * 1f);
+				camera.LookAt(_owner.transform.position + Vector3.up * 1f);
+
 				_animationBehaviour.PlayAgony();
 				AiBehaviour.OnPlayerCatched?.Invoke();
 			});
