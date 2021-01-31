@@ -7,5 +7,8 @@
         public const int BoundFar = 2;
         public const int BoundMid = 3;
         public const int BoundClose = 4;
+        public const int Crow = 5;
+        public const int Wind = 6;
+        public const int Insects = 7;
     }
 }

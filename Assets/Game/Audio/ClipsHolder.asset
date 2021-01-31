@@ -41,3 +41,18 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 6f75f341577b3c548bbc63558c104b90, type: 3}
     Volume: 1
     AudioMixerGroup: {fileID: -3632886051953856151, guid: 72e2ef5d9893f694a8947a21d5bba33c, type: 2}
+  - AudioClips:
+    - {fileID: 8300000, guid: 7b6840e0d6803114a9c45682a1a6dc91, type: 3}
+    - {fileID: 8300000, guid: 79cf97192b8674943b5926fed604e8e6, type: 3}
+    - {fileID: 8300000, guid: 09618b136fe3421428a38b0f88868e8c, type: 3}
+    - {fileID: 8300000, guid: 4b072a726a68ac845b2803ef517b5a08, type: 3}
+    Volume: 1
+    AudioMixerGroup: {fileID: -3632886051953856151, guid: 72e2ef5d9893f694a8947a21d5bba33c, type: 2}
+  - AudioClips:
+    - {fileID: 8300000, guid: f676c9b783cf3d346abf511c620e8cdb, type: 3}
+    Volume: 0.5
+    AudioMixerGroup: {fileID: -3632886051953856151, guid: 72e2ef5d9893f694a8947a21d5bba33c, type: 2}
+  - AudioClips:
+    - {fileID: 8300000, guid: 2d6312317186cff46a722b4f10c00095, type: 3}
+    Volume: 0.5
+    AudioMixerGroup: {fileID: -3632886051953856151, guid: 72e2ef5d9893f694a8947a21d5bba33c, type: 2}
