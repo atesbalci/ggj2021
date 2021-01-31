@@ -36,7 +36,7 @@ namespace Game.Behaviours.Enemy.AI.States
 			CharacterInputBehaviour characterInputBehaviour = _player.GetComponent<CharacterInputBehaviour>();
 			characterInputBehaviour.enabled = false;
 
-			Vector3 targetPosition = _player.position + _player.forward * 0.5f;
+			Vector3 targetPosition = _player.position + _player.forward * 0.625f;
 			targetPosition = new Vector3(targetPosition.x, 0f, targetPosition.z);
 			
 			float moveStartTime = Time.time;
