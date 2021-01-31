@@ -3611,6 +3611,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7361368077380488884, guid: 08edab0b4555fd44a88902127ca93836, type: 3}
+      propertyPath: runningSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7361368077380488886, guid: 08edab0b4555fd44a88902127ca93836, type: 3}
       propertyPath: m_Name
       value: Player
@@ -4501,7 +4505,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 3
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
