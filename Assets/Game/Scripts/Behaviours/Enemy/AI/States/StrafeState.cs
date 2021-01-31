@@ -38,6 +38,12 @@ namespace Game.Behaviours.Enemy.AI.States
 			SetWaypoint(0);
 		}
 
+		public override void Exit()
+		{
+			base.Exit();
+			
+		}
+
 		public override Type Tick()
 		{
 			float distanceToWaypoint = Vector3.Distance(_owner.position, _player.position + _relativeWaypoints[_currentWaypointIndex]);
@@ -49,6 +55,7 @@ namespace Game.Behaviours.Enemy.AI.States
 
 			if (Mathf.Abs(distanceToWaypoint - _currentWaypointSetDistance)  > 10f)
 			{
+				_owner.transform.position += (_player.position - _owner.position).normalized * 10f;
 				SetNextWaypoint();
 			}
 

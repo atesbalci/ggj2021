@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Behaviours.Checkpoint;
 using Game.Behaviours.Enemy.AI.States;
 using Game.Behaviours.Enemy.Animation;
 using Game.Behaviours.Enemy.Movement;
@@ -13,6 +14,7 @@ namespace Game.Behaviours.Enemy.AI
 	public class AiBehaviour : MonoBehaviour
 	{
 		public static Action OnPlayerCatched;
+		public static bool   IsPlayerInSafeZone;
 		
 		private Transform          _player;
 		private MovementBehaviour  _movementBehaviour;
@@ -30,6 +32,18 @@ namespace Game.Behaviours.Enemy.AI
 			_visionSensor       = GetComponent<VisionSensor>();
 			
 			CreateStages();
+		}
+
+		private void Start()
+		{
+			CheckpointBehaviour.OnPlayerEnter += CheckpointBehaviour_OnPlayerEnter;
+			CheckpointBehaviour.OnPlayerExit  += CheckpointBehaviour_OnPlayerExit;
+		}
+		
+		private void OnDestroy()
+		{
+			CheckpointBehaviour.OnPlayerEnter -= CheckpointBehaviour_OnPlayerEnter;
+			CheckpointBehaviour.OnPlayerExit  -= CheckpointBehaviour_OnPlayerExit;
 		}
 
 		private void Update()
@@ -69,6 +83,17 @@ namespace Game.Behaviours.Enemy.AI
 		private BaseState GetState(Type type)
 		{
 			return _states.FirstOrDefault(item => item.GetType() == type);
+		}
+		
+		private void CheckpointBehaviour_OnPlayerEnter()
+		{
+			IsPlayerInSafeZone = true;
+			EnterState(GetState(typeof(IdleState)));
+		}
+
+		private void CheckpointBehaviour_OnPlayerExit()
+		{
+			IsPlayerInSafeZone = false;
 		}
 	}
 }

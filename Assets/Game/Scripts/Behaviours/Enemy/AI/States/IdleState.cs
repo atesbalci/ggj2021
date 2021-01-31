@@ -39,6 +39,8 @@ namespace Game.Behaviours.Enemy.AI
 
 		public override Type Tick()
 		{
+			if (AiBehaviour.IsPlayerInSafeZone) return GetType();
+			
 			if (Time.time - _stateEnterTime > 10f)
 			{
 				// Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
