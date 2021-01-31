@@ -1,18 +1,19 @@
 using Game.Behaviours.Enemy.AI;
 using Game.Behaviours.Interactable;
+using Game.Models;
 using UnityEngine.SceneManagement;
 
 namespace Game.Controllers
 {
 	public class LevelFinishController
 	{
-		private readonly int _requiredCollectableCount = 2;
+		private const int RequiredCollectableCount = 2;
 
-		private int _currentCollectableCount;
+		private readonly GameStateData _gameStateData;
 
-		public LevelFinishController()
+		public LevelFinishController(GameStateData gameStateData)
 		{
-			_currentCollectableCount = 0;
+			_gameStateData = gameStateData;
 			
 			Collectable.OnCollected     += Collectable_OnCollected;
 			AiBehaviour.OnPlayerCatched += AiBehaviour_OnPlayerCatched;
@@ -38,9 +39,8 @@ namespace Game.Controllers
 		
 		private void Collectable_OnCollected(Collectable collectable)
 		{
-			_currentCollectableCount++;
-
-			if (_currentCollectableCount >= _requiredCollectableCount)
+			_gameStateData.PickCollectable();
+			if (_gameStateData.GetPickedCollectableCount() >= RequiredCollectableCount)
 			{
 				FinishLevel(true);
 			}
