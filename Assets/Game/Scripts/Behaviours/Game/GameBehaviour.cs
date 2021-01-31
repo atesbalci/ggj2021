@@ -1,5 +1,7 @@
 ﻿using Game.Behaviours.Boundaries;
+using Game.Behaviours.ECS.Systems;
 using Game.Models;
+using Unity.Entities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -33,6 +35,7 @@ namespace Game.Behaviours.Game
 
         private void Restart()
         {
+            EntityManagement.ClearEntities();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }

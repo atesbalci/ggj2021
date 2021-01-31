@@ -16,8 +16,8 @@ namespace Game.Behaviours.ECS.Systems
         
         protected override void OnUpdate()
         {
-            float3 playerLoc = PlayerTransform.position;
-            playerLoc.y = 0f;
+            float3 playerPosition = PlayerTransform.position;
+            playerPosition.y = 0f;
             
             float3 playerRight = PlayerTransform.right;
             float3 playerForward = PlayerTransform.forward;
@@ -30,19 +30,22 @@ namespace Game.Behaviours.ECS.Systems
             var entityQuery = GetEntityQuery(query);
             var AABBQuery = GetEntityQuery(typeof(AABB));
             var sphereQuery = GetEntityQuery(typeof(Sphere));
+            var cullingQuery = GetEntityQuery(typeof(StaticGrassCulling));
             
             var translations = entityQuery.ToComponentDataArray<Translation>(Allocator.TempJob);
             var grassData = entityQuery.ToComponentDataArray<GrassData>(Allocator.TempJob);
             var aabbColliders = AABBQuery.ToComponentDataArray<AABB>(Allocator.TempJob);
             var sphereColliders = sphereQuery.ToComponentDataArray<Sphere>(Allocator.TempJob);
+            var cullers = cullingQuery.ToComponentDataArray<StaticGrassCulling>(Allocator.TempJob);
             
             var rotations = new NativeArray<Rotation>(translations.Length, Allocator.TempJob);
             var collisionResults = new NativeArray<bool>(translations.Length, Allocator.TempJob);
             var nextPositions = new NativeArray<float3>(translations.Length, Allocator.TempJob);
+            var cullingResults = new NativeArray<bool>(cullers.Length, Allocator.TempJob);
 
             var distanceCheckJob = new DistanceCheckJob
             {
-                PlayerLoc = playerLoc,
+                PlayerPosition = playerPosition,
                 PlayerForward = playerForward,
                 PlayerRight = playerRight,
                 Translations = translations,
@@ -65,8 +68,18 @@ namespace Game.Behaviours.ECS.Systems
             var collisionCheckHandle = collisionCheckJob.Schedule(translations.Length, 32);
             collisionCheckHandle.Complete();
 
+            var cullingCheckJob = new CullingCheckJob
+            {
+                PlayerPosition = playerPosition,
+                Results = cullingResults,
+                Cullers = cullers,
+            };
+            
+            var cullingCheckHandle = cullingCheckJob.Schedule(cullers.Length, 32);
+            cullingCheckHandle.Complete();
+            
             var entities = entityQuery.ToEntityArray(Allocator.Temp);
-            for (var i = 0; i < collisionResults.Length; i++)
+            for (var i = 0; i < entities.Length; i++)
             {
                 var translation = new Translation
                 {
@@ -77,6 +90,25 @@ namespace Game.Behaviours.ECS.Systems
 
                 if (!grassData[i].IsDynamic)
                 {
+                    for (var j = 0; j < cullingResults.Length; j++)
+                    {
+                        if (grassData[i].StaticCullingId == cullers[j].Id)
+                        {
+                            if (cullingResults[j])
+                            {
+                                var group = EntityManager.GetBuffer<LinkedEntityGroup>(entities[i]);
+                                EntityManager.AddComponent<Disabled>(group[1].Value);
+                                EntityManager.AddComponent<Disabled>(entities[i]);
+                            }
+                            else
+                            {
+                                var group = EntityManager.GetBuffer<LinkedEntityGroup>(entities[i]);
+                                EntityManager.RemoveComponent<Disabled>(group[1].Value);
+                                EntityManager.RemoveComponent<Disabled>(entities[i]);
+                            }
+                        }
+                    }
+
                     continue;
                 }
                 
@@ -84,10 +116,15 @@ namespace Game.Behaviours.ECS.Systems
 
                 if (!collisionResults[i])
                 {
+                    var group = EntityManager.GetBuffer<LinkedEntityGroup>(entities[i]);
+                    EntityManager.RemoveComponent<Disabled>(group[1].Value);
                     EntityManager.RemoveComponent<Disabled>(entities[i]);
+                    
                 }
                 else
                 {
+                    var group = EntityManager.GetBuffer<LinkedEntityGroup>(entities[i]);
+                    EntityManager.AddComponent<Disabled>(group[1].Value);
                     EntityManager.AddComponent<Disabled>(entities[i]);
                 }
             }
@@ -96,32 +133,45 @@ namespace Game.Behaviours.ECS.Systems
             translations.Dispose();
             aabbColliders.Dispose();
             sphereColliders.Dispose();
+            cullers.Dispose();
             grassData.Dispose();
             rotations.Dispose();
             collisionResults.Dispose();
             nextPositions.Dispose();
+            cullingResults.Dispose();
         }
 
+        private struct CullingCheckJob : IJobParallelFor
+        {
+            [ReadOnly] public float3 PlayerPosition;
+            [ReadOnly] public NativeArray<StaticGrassCulling> Cullers;
+            public NativeArray<bool> Results;
+            public void Execute(int i)
+            {
+                Results[i] = math.distance(PlayerPosition, Cullers[i].Position) > Cullers[i].CullDistance;
+            }
+        }
+        
         private struct DistanceCheckJob : IJobParallelFor
         {
-            [ReadOnly] public float3 PlayerLoc;
+            [ReadOnly] public float3 PlayerPosition;
             [ReadOnly] public float3 PlayerForward;
             [ReadOnly] public float3 PlayerRight;
             [ReadOnly] public NativeArray<Translation> Translations;
-            public NativeArray<float3> NextPositions;
-            public NativeArray<Rotation> Rotations;
-            public NativeArray<GrassData> GrassData;
+            [ReadOnly] public NativeArray<GrassData> GrassData;
+            [WriteOnly] public NativeArray<float3> NextPositions;
+            [WriteOnly] public NativeArray<Rotation> Rotations;
             
             public void Execute(int i)
             {
-                var direction = PlayerLoc - Translations[i].Value;
+                var direction = PlayerPosition - Translations[i].Value;
                 var distance = math.lengthsq(direction);
 
                 if (GrassData[i].IsDynamic)
                 {
                     if (distance > Constants.MaxDistSq)
                     {
-                        NextPositions[i] = PlayerLoc + math.normalize(direction) * Constants.MaxDist;
+                        NextPositions[i] = PlayerPosition + math.normalize(direction) * Constants.MaxDist;
                     }
                     else
                     {
@@ -179,11 +229,5 @@ namespace Game.Behaviours.ECS.Systems
                 }
             }
         }
-    }
-
-    public struct GrassData : IComponentData
-    {
-        public bool IsDynamic;
-        public float SwayDuration;
     }
 }

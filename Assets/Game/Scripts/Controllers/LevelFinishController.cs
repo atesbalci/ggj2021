@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Game.Behaviours.ECS.Systems;
 using Game.Behaviours.Enemy.AI;
 using Game.Behaviours.Interactable;
 using Game.Models;
@@ -34,6 +35,7 @@ namespace Game.Controllers
 			}
 			else
 			{
+				EntityManagement.ClearEntities();
 				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 			}
 		}

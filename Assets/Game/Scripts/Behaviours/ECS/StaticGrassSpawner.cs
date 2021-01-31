@@ -1,4 +1,5 @@
 ﻿using Game.Behaviours.ECS.Systems;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
@@ -17,14 +18,28 @@ namespace Game.Behaviours.ECS
         
         [SerializeField] private GameObject _grassObject;
 
+        private EntityManager _entityManager;
+        
         private void Start()
         {
-            Spawn(_minDistance, _maxDistance, _activationDistance, _distanceIncrement, _radialGapIncrement, _randomization);
+            _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+            var entity = _entityManager.CreateEntity(typeof(StaticGrassCulling));
+            var cullingId = gameObject.GetHashCode();
+            
+            var grassCulling = new StaticGrassCulling
+            {
+                Id = cullingId,
+                Position = transform.position,
+                CullDistance = _activationDistance
+            };
+
+            _entityManager.SetComponentData(entity, grassCulling);
+            
+            Spawn(_minDistance, _maxDistance, _distanceIncrement, _radialGapIncrement, _randomization, cullingId);
         }
 
-        private void Spawn(float minDistance, float maxDistance, float activationDistance, float distanceIncrement, float radialGapIncrement, float randomization)
+        private void Spawn(float minDistance, float maxDistance, float distanceIncrement, float radialGapIncrement, float randomization, int cullingId)
         {
-            var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
             var templateEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(_grassObject,
                 new GameObjectConversionSettings
                 {
@@ -42,17 +57,19 @@ namespace Game.Behaviours.ECS
             {
                 var loc = pos + new Vector3(Mathf.Sin(angle), 0f, Mathf.Cos(angle)) * distance;
                 var randomLoc = new Vector3(Random.Range(-randomization, randomization), 0, Random.Range(-randomization, randomization));
-                var grassEntity = entityManager.Instantiate(templateEntity);
-                entityManager.SetComponentData(grassEntity, new Translation
+                var grassEntity = _entityManager.Instantiate(templateEntity);
+               
+                _entityManager.SetComponentData(grassEntity, new Translation
                 {
                     Value = loc + randomLoc
                 });
                 
-                entityManager.AddComponent<GrassData>(grassEntity);
-                entityManager.SetComponentData(grassEntity, new GrassData()
+                _entityManager.AddComponent<GrassData>(grassEntity);
+                _entityManager.SetComponentData(grassEntity, new GrassData()
                 {
                     IsDynamic = false,
                     SwayDuration = 0,
+                    StaticCullingId = cullingId
                 });
                 
                 angle += radialGapIncrement;

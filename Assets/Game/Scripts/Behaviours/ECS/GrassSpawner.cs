@@ -28,7 +28,7 @@ namespace Game.Behaviours.ECS
             Spawn();
         }
 
-        public void Spawn()
+        private void Spawn()
         {
             const float distanceIncrement = (Constants.MaxDist - Constants.MinDist) / Constants.PlayerGrassPoolSize;
 
@@ -48,6 +48,7 @@ namespace Game.Behaviours.ECS
                 {
                     IsDynamic = true,
                     SwayDuration = 0,
+                    StaticCullingId = -1,
                 };
                 
                 _entityManager.AddComponent<GrassData>(grassEntity);
