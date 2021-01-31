@@ -13,6 +13,8 @@ namespace Game.Behaviours.Enemy.AI.States
 		private readonly Transform         _player;
 		private readonly MovementBehaviour _movementBehaviour;
 		private readonly VisionSensor      _visionSensor;
+
+		private float _stateEnterTime;
 		
 		public ChaseState(
 			Transform player,
@@ -27,6 +29,8 @@ namespace Game.Behaviours.Enemy.AI.States
 		public override void Enter()
 		{
 			base.Enter();
+
+			_stateEnterTime = Time.time;
 			
 			OnEnter?.Invoke();
 		}
@@ -45,6 +49,11 @@ namespace Game.Behaviours.Enemy.AI.States
 			if (_visionSensor.IsPlayerInCatchDistance())
 			{
 				return typeof(CatchState);
+			}
+
+			if (Time.time - _stateEnterTime > 7f)
+			{
+				return typeof(StrafeState);
 			}
 			
 			return GetType();

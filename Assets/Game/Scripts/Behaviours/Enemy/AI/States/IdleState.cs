@@ -27,6 +27,9 @@ namespace Game.Behaviours.Enemy.AI
 		{
 			base.Enter();
 
+			_movementBehaviour.Deactivate();
+			_movementBehaviour.Activate();
+			
 			_stateEnterTime = Time.time;
 			
 			_animationBehaviour.PlayIdle();
